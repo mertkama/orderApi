@@ -6,11 +6,11 @@ Bu API .Net Core 5 ile geliştiriliyor.
 
     dotnet new webapi -n WebApi 
 
-Sonrasında hala proje klasörünün içerisindeyken şu komut ile 'SupplierSln' adında bir **sln** dosyası oluşturmak için:
+Sonrasında hala proje klasörünün içerisindeyken şu komut ile 'OrderSln' adında bir **sln** dosyası oluşturmak için:
 
-    dotnet new sln -n SupplierSln
+    dotnet new sln -n OrderSln
 
-Artık WebApi ile SupplierSln'i birleştirmemiz gerekiyor. Bunun için:
+Artık WebApi ile OrderSln'i birleştirmemiz gerekiyor. Bunun için:
 
     dotnet sln add WebApi 
 
