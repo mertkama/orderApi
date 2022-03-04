@@ -1,6 +1,6 @@
 namespace WebApi.Models
 {
-    public class Order
+    public class GetOrderItemDetailViewModel
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
