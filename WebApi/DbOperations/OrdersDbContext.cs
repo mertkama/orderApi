@@ -1,25 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MySqlConnector;
 using WebApi.Models;
 
 namespace WebApi.DbOperations
 {
     public class OrderDbContext : DbContext
     {
-        protected readonly IConfiguration Configuration;
+        protected readonly MySqlConnection _connection;
 
-        public OrderDbContext(IConfiguration configuration)
+        public OrderDbContext(MySqlConnection connection)
         {
-            Configuration = configuration;
+            _connection = connection;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            // connect to mysql with connection string from app settings
-            var connectionString = Configuration.GetConnectionString("OrderDb");
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-        }
         public DbSet<Order> Orders { get; set; }
-            
+
+
+
     }
 }

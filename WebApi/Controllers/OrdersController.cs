@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         // asagida yazdigim db baglantilari duzeltilecek. 
         // DI ile yapmaya calisacagim,  simdilik gecici olarak bu sekilde kullandim.
 
-        MySqlConnection connection = new MySqlConnection("Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True;");
+        MySqlConnection connection = new MySqlConnection("Server=localhost;Database=order_database;Uid=root;Pwd=12345678;");
 
         [HttpGet]
         public IActionResult Index()
@@ -33,7 +33,7 @@ namespace WebApi.Controllers
 
             connection.Open();
 
-            MySqlCommand cmd = new MySqlCommand("select * from Suppliers", connection);
+            MySqlCommand cmd = new MySqlCommand("select * from orders;", connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
