@@ -12,7 +12,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]s")]
-    public class SupplierController : ControllerBase
+    public class OrderController : ControllerBase
     {
         // private readonly SupplierDbContext _context;
 
@@ -24,12 +24,12 @@ namespace WebApi.Controllers
         // asagida yazdigim db baglantilari duzeltilecek. 
         // DI ile yapmaya calisacagim,  simdilik gecici olarak bu sekilde kullandim.
 
-        MySqlConnection connection = new MySqlConnection("Server=localhost;Database=IceStacks-Order;Uid=root;Pwd=55255Mert_;");
+        MySqlConnection connection = new MySqlConnection("Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True;");
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<GetOrdersViewModel> orders = new List<GetOrdersViewModel>();
+            List<GetOrderViewModel> orders = new List<GetOrderViewModel>();
 
             connection.Open();
 
@@ -38,19 +38,19 @@ namespace WebApi.Controllers
 
             while (reader.Read())
             {
-               
-                GetOrdersViewModel order = new GetOrdersViewModel();
 
-                order.Id = reader[",d"].ToString();
-                order.UserId = reader["user_id"].ToString();
-                order.ItemCount = reader["item_count"].ToString();
-                order.TotalPrice = reader["total_price"].ToString();
-                order.PaidPrice = reader["paid_price"].ToString();
-                order.DiscountedPrice = reader["discounted_price"].ToString();
-                order.PaidDate = reader["paid_date"].ToString();
-                order.OrderDate = reader["order_date"].ToString();
-                order.Status = reader["status"].ToString();
-                order.Notes = reader["notes"].ToString();
+                GetOrderViewModel order = new GetOrderViewModel();
+
+                order.Id = Convert.ToInt32(reader["id"]);
+                order.UserId =Convert.ToInt32(reader["user_id"]);
+                order.ItemCount = Convert.ToInt32(reader["item_count"]);
+                order.TotalPrice = float.Parse(reader["total_price"].ToString());
+                order.PaidPrice = float.Parse(reader["paid_price"].ToString());
+                order.DiscountedPrice = float.Parse(reader["discounted_price"].ToString());
+                order.PaidDate = DateTime.Parse(reader["paid_date"].ToString());
+                order.OrderDate = DateTime.Parse (reader["order_date"].ToString());
+                order.Status = Convert.ToString (reader["status"]);
+                order.Notes = Convert.ToString (reader["notes"]);
 
                 orders.Add(order);
             }
@@ -74,16 +74,16 @@ namespace WebApi.Controllers
 
             while (reader.Read())
             {
-                order.Id = reader["id"].ToString();
-                order.UserId = reader["user_id"].ToString();
-                order.ItemCount = reader["item_count"].ToString();
-                order.TotalPrice = reader["total_price"].ToString();
-                order.PaidPrice = reader["paid_price"].ToString();
-                order.DiscountedPrice = reader["discounted_price"].ToString();
-                order.PaidDate = reader["paid_date"].ToString();
-                order.OrderDate = reader["order_date"].ToString();
-                order.Status = reader["status"].ToString();
-                order.Notes = reader["notes"].ToString();
+                order.Id = Convert.ToInt32(reader["id"]);
+                order.UserId = Convert.ToInt32(reader["user_id"]);
+                order.ItemCount = Convert.ToInt32(reader["item_count"]);
+                order.TotalPrice = float.Parse(reader["total_price"].ToString());
+                order.PaidPrice = float.Parse(reader["paid_price"].ToString());
+                order.DiscountedPrice = float.Parse(reader["discounted_price"].ToString());
+                order.PaidDate = DateTime.Parse(reader["paid_date"].ToString());
+                order.OrderDate = DateTime.Parse(reader["order_date"].ToString());
+                order.Status = Convert.ToString(reader["status"]);
+                order.Notes = Convert.ToString(reader["notes"]);
 
             }
 
@@ -96,16 +96,15 @@ namespace WebApi.Controllers
         public IActionResult Store([FromBody] CreateOrderModel newOrder) // model ile olmali
         {
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand("insert into Orders (name, surname, gender, address, mail, phone, company_name, company_mail, company_phone) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8, @p9)", connection);
-            cmd.Parameters.AddWithValue("@p1", newOrder.Id);
-            cmd.Parameters.AddWithValue("@p2", newOrder.UserId);
-            cmd.Parameters.AddWithValue("@p3", newOrder.ItemCount);
-            cmd.Parameters.AddWithValue("@p4", newOrder.TotalPrice);
-            cmd.Parameters.AddWithValue("@p5", newOrder.PaidPrice);
-            cmd.Parameters.AddWithValue("@p6", newOrder.DiscountedPrice);
-            cmd.Parameters.AddWithValue("@p7", newOrder.PaidDate);
-            cmd.Parameters.AddWithValue("@p8", newOrder.OrderDate);
-            cmd.Parameters.AddWithValue("@p9", newOrder.Notes);
+            MySqlCommand cmd = new MySqlCommand("insert into Orders (userid, itemcount, totalprice, paidprice, discountedprice, paiddate, orderdate, status, notes) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8)", connection);
+            cmd.Parameters.AddWithValue("@p1", newOrder.UserId);
+            cmd.Parameters.AddWithValue("@p2", newOrder.ItemCount);
+            cmd.Parameters.AddWithValue("@p3", newOrder.TotalPrice);
+            cmd.Parameters.AddWithValue("@p4", newOrder.PaidPrice);
+            cmd.Parameters.AddWithValue("@p5", newOrder.DiscountedPrice);
+            cmd.Parameters.AddWithValue("@p6", newOrder.PaidDate);
+            cmd.Parameters.AddWithValue("@p7", newOrder.OrderDate);
+            cmd.Parameters.AddWithValue("@p8", newOrder.Notes);
             cmd.ExecuteNonQuery();
 
             connection.Close();
@@ -114,7 +113,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edit(int id, [FromBody] Orders updatedSupplier) // model ile olmali
+        public IActionResult Edit(int id, [FromBody] Order updatedSupplier) // model ile olmali
         {
 
             return Ok();
@@ -126,54 +125,4 @@ namespace WebApi.Controllers
             return Ok();
         }
     }
-
-    internal class GetOrdersViewModel
-    {
-        internal string Id;
-        internal string UserId;
-        internal string ItemCount;
-        internal string TotalPrice;
-        internal string PaidPrice;
-        internal string DiscountedPrice;
-        internal string PaidDate;
-        internal string OrderDate;
-        internal string Status;
-        internal string Notes;
-
-        public GetOrdersViewModel()
-        {
-        }
-    }
-
-    internal class GetOrderDetailViewModel
-    {
-        internal string Notes;
-        internal string Status;
-        internal string OrderDate;
-        internal string PaidDate;
-        internal string DiscountedPrice;
-        internal string PaidPrice;
-        internal string TotalPrice;
-        internal string ItemCount;
-        internal string UserId;
-        internal string Id;
-
-        public GetOrderDetailViewModel()
-        {
-        }
-    }
-
-    public class CreateOrderModel
-    {
-        internal object Id;
-        internal object UserId;
-        internal object ItemCount;
-        internal object TotalPrice;
-        internal object PaidPrice;
-        internal object DiscountedPrice;
-        internal object PaidDate;
-        internal object OrderDate;
-        internal object Notes;
-    }
 }
-

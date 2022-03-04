@@ -1,8 +1,9 @@
+using System;
+
 namespace WebApi.Models
 {
     public class CreateOrderModel
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
         public int ItemCount { get; set; }
         public float TotalPrice { get; set; }

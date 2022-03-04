@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using StackExchange.Redis;
 using WebApi.Models;
 
 namespace WebApi.DbOperations
