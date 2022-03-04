@@ -32,5 +32,6 @@ MySql kullanmak için **WebApi** içerisinde:
 ![Ekran görüntüsü 2022-03-05 013536](https://user-images.githubusercontent.com/97520268/156851310-17949cd7-2686-4899-883f-c59491cd1a22.png)
 
 
+![Ekran görüntüsü 2022-03-05 020135](https://user-images.githubusercontent.com/97520268/156853711-ccc97fb4-eb68-4541-aebe-74d619c7b8fd.png)
 
 
