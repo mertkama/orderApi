@@ -65,7 +65,7 @@ namespace WebApi.Controllers
         {
             connection.Open();
 
-            MySqlCommand cmd = new MySqlCommand("select * from Orders where id = @id", connection);
+            MySqlCommand cmd = new MySqlCommand("select * from orders where id = @id", connection);
             cmd.Parameters.AddWithValue("@id", id);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -96,7 +96,7 @@ namespace WebApi.Controllers
         public IActionResult Store([FromBody] CreateOrderModel newOrder) // model ile olmali
         {
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand("insert into Orders (userid, itemcount, totalprice, paidprice, discountedprice, paiddate, orderdate, status, notes) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8)", connection);
+            MySqlCommand cmd = new MySqlCommand("insert into orders (user_id, item_count, total_price, paid_price, discounted_price, paid_date, order_date, status, notes) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7, @p8,@p9)", connection);
             cmd.Parameters.AddWithValue("@p1", newOrder.UserId);
             cmd.Parameters.AddWithValue("@p2", newOrder.ItemCount);
             cmd.Parameters.AddWithValue("@p3", newOrder.TotalPrice);
@@ -104,7 +104,8 @@ namespace WebApi.Controllers
             cmd.Parameters.AddWithValue("@p5", newOrder.DiscountedPrice);
             cmd.Parameters.AddWithValue("@p6", newOrder.PaidDate);
             cmd.Parameters.AddWithValue("@p7", newOrder.OrderDate);
-            cmd.Parameters.AddWithValue("@p8", newOrder.Notes);
+            cmd.Parameters.AddWithValue("@p8", newOrder.Status);
+            cmd.Parameters.AddWithValue("@p9", newOrder.Notes);
             cmd.ExecuteNonQuery();
 
             connection.Close();
